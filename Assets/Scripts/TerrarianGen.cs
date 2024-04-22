@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class TerrarianGen : MonoBehaviour
 {
-    public Sprite tile;
+    public int dirtLayerHeight = 5;
 
+    public Sprite grass;
+    public Sprite dirt;
+    public Sprite stone;
+
+    public bool generateCaves = true;   
     public float surfaceValue = 0.25f;
     public int worldSize = 100;
     public float caveFreq = 0.05f;
@@ -30,17 +35,36 @@ public class TerrarianGen : MonoBehaviour
 
             for (int y = 0; y < height; y++)
             {
-                
 
-                if (noiseTexture.GetPixel(x,y).r > surfaceValue)
+                Sprite tileSprite;
+                if (y < height - dirtLayerHeight)
                 {
-                    GameObject newTile = new GameObject(name = "tile");
-                    newTile.transform.parent = this.transform;
-                    newTile.AddComponent<SpriteRenderer>();
-                    newTile.GetComponent<SpriteRenderer>().sprite = tile;
-                    newTile.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+                    tileSprite = stone;                    
                 }
-                
+                else if (y < height - 1)
+                {
+                    tileSprite = dirt;
+                }
+                else
+                {
+                    tileSprite = grass;
+                }
+
+                if (generateCaves)
+                {
+                    if (noiseTexture.GetPixel(x, y).r > surfaceValue)
+                    {
+                        placeTile(tileSprite, x, y);                   
+                    }
+                }
+                else
+                {
+                    placeTile(tileSprite, x, y);
+                }
+
+               
+
+
             }
         }
     }
@@ -59,5 +83,16 @@ public class TerrarianGen : MonoBehaviour
         }
 
         noiseTexture.Apply();
+    }
+
+
+    public void placeTile(Sprite tileSprite, float x, float y)
+    {
+        GameObject newTile = new GameObject();
+        newTile.transform.parent = this.transform;
+        newTile.AddComponent<SpriteRenderer>();
+        newTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
+        newTile.name = tileSprite.name;
+        newTile.transform.position = new Vector2(x + 0.5f, y + 0.5f);
     }
 }

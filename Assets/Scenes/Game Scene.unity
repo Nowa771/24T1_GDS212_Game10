@@ -152,7 +152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c712ce41599be5842aca0b6c4f3d5082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile: {fileID: 7482667652216324306, guid: 454d93adc629eac4985513341412a34f, type: 3}
+  dirtLayerHeight: 5
+  grass: {fileID: 21300000, guid: aa72bf1d98dbf9f4496b703c1b623927, type: 3}
+  dirt: {fileID: 21300000, guid: 61b450525f9324a4087f1f6864220a3d, type: 3}
+  stone: {fileID: 21300000, guid: 669406df321d8e144ba3ba216d3b95c4, type: 3}
+  generateCaves: 1
   surfaceValue: 0.25
   worldSize: 100
   caveFreq: 0.08
