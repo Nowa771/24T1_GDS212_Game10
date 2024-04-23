@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1443b5f2ef32ce64b81b5cdf2c5f2c36, type: 3}
+  m_Name: LeafOrange
+  m_EditorClassIdentifier: 
+  tileName: LeafOrange
+  tileSprite: {fileID: 21300000, guid: 54e8f6c2816f0fe4d8d6c9a9aea06452, type: 3}

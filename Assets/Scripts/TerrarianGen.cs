@@ -5,13 +5,8 @@ using UnityEngine;
 public class TerrarianGen : MonoBehaviour
 {
 
-    [Header("Tile Sprites")]
-    public Sprite grass;
-    public Sprite dirt;
-    public Sprite stone;
-    public Sprite log;
-    public Sprite leaf;
-    public Sprite leafOrange;
+    [Header("Tile Atlas")]
+    public TileAtlas tileAtlas;
 
     [Header("Trees")]
     public int treeChance = 10;
@@ -31,17 +26,62 @@ public class TerrarianGen : MonoBehaviour
     public float terrainFreq = 0.05f;
     public float caveFreq = 0.05f;
     public float seed;
-    public Texture2D noiseTexture;
+    public Texture2D caveNoiseTexture;
 
-    public GameObject[] worldChunks;
+    [Header("ore Settings")]
+    public float coalRarity;
+    public float coalSize;
+    public float ironRarity, ironSize;
+    public float goldRarity, goldSize;
+    public float diamondRarity, diamondSize;
+    public Texture2D coalSpread;
+    public Texture2D ironSpread;
+    public Texture2D goldSpread;
+    public Texture2D diamondSpread;
+
+    private GameObject[] worldChunks;
     private List<Vector2> worldTiles = new List<Vector2>();
 
+    private void OnValidate()
+    {
+        if (caveNoiseTexture == null)
+        {
+            caveNoiseTexture = new Texture2D(worldSize, worldSize);
+            coalSpread = new Texture2D(worldSize, worldSize);
+            ironSpread = new Texture2D(worldSize, worldSize);
+            goldSpread = new Texture2D(worldSize, worldSize);
+            diamondSpread = new Texture2D(worldSize, worldSize);
+        }
+
+        GenerateNoiseTexture(caveFreq, surfaceValue, caveNoiseTexture);
+        // Ore
+        GenerateNoiseTexture(coalRarity, coalSize, coalSpread);
+        GenerateNoiseTexture(ironRarity, ironSize, ironSpread);
+        GenerateNoiseTexture(goldRarity, goldSize, goldSpread);
+        GenerateNoiseTexture(diamondRarity, diamondSize, diamondSpread);
+    }
 
     private void Start()
     {
+        if (caveNoiseTexture == null)
+        {
+            caveNoiseTexture = new Texture2D(worldSize, worldSize);
+            coalSpread = new Texture2D(worldSize, worldSize);
+            ironSpread = new Texture2D(worldSize, worldSize);
+            goldSpread = new Texture2D(worldSize, worldSize);
+            diamondSpread = new Texture2D(worldSize, worldSize);
+        }
+
+
         seed = Random.Range(-10000, 10000);
+        GenerateNoiseTexture(caveFreq, surfaceValue,caveNoiseTexture);
+        // Ore
+        GenerateNoiseTexture(coalRarity, coalSize, coalSpread);
+        GenerateNoiseTexture(ironRarity, ironSize, ironSpread);
+        GenerateNoiseTexture(goldRarity, goldSize, goldSpread);
+        GenerateNoiseTexture(diamondRarity, diamondSize, diamondSpread);
+
         CreateChunks();
-        GenerateNoiseTexture();
         GenerateTerrain();
     }
     public void CreateChunks()
@@ -69,30 +109,39 @@ public class TerrarianGen : MonoBehaviour
                 Sprite tileSprite;
                 if (y < height - dirtLayerHeight)
                 {
-                    tileSprite = stone;                    
+                    if (coalSpread.GetPixel(x, y).r > 0.5f)
+                        tileSprite = tileAtlas.coal.tileSprite;                   
+                   else if (ironSpread.GetPixel(x, y).r > 0.5f)
+                        tileSprite = tileAtlas.iron.tileSprite;                    
+                   else if (goldSpread.GetPixel(x, y).r > 0.5f)
+                        tileSprite = tileAtlas.gold.tileSprite;                    
+                   else if (diamondSpread.GetPixel(x, y).r > 0.5f) 
+                        tileSprite = tileAtlas.diamond.tileSprite;
+                   else
+                    tileSprite = tileAtlas.stone.tileSprite;
                 }
                 else if (y < height - 1)
                 {
-                    tileSprite = dirt;
+                    tileSprite = tileAtlas.dirt.tileSprite;
                 }
                 else
                 {
                     // top layer of terrain
-                    tileSprite = grass;
+                    tileSprite = tileAtlas.grass.tileSprite;
 
                 }
 
                 // Cave generation
                 if (generateCaves)
                 {
-                    if (noiseTexture.GetPixel(x, y).r > surfaceValue)
+                    if (caveNoiseTexture.GetPixel(x, y).r > 0.5f)
                     {
-                        placeTile(tileSprite, x, y);
+                        placeTile(tileSprite, x, y, false);
                     }
                 }
                 else
                 {
-                    placeTile(tileSprite, x, y);
+                    placeTile(tileSprite, x, y, false);
                 }
 
                 if (y >= height - 1)
@@ -118,16 +167,17 @@ public class TerrarianGen : MonoBehaviour
     }
 
     // RNG of the world
-    private void GenerateNoiseTexture()
+    public void GenerateNoiseTexture(float frequency, float limit,Texture2D noiseTexture)
     {
-        noiseTexture = new Texture2D(worldSize, worldSize);
-
         for (int x = 0; x < noiseTexture.width; x++)
         {
             for (int y = 0; y < noiseTexture.height; y++)
             {
-                float v = Mathf.PerlinNoise((x + seed) * caveFreq, (y + seed) * caveFreq);
-                noiseTexture.SetPixel(x, y, new Color(v, v, v));
+                float v = Mathf.PerlinNoise((x + seed) * frequency, (y + seed) * frequency);
+                if (v > limit)
+                noiseTexture.SetPixel(x, y, Color.white);
+                else
+                    noiseTexture.SetPixel(x, y, Color.black);
             }
         }
 
@@ -144,26 +194,26 @@ public class TerrarianGen : MonoBehaviour
             int treeHeight = Random.Range(minTreeHeight, maxTreeHeight);
             for (int i = 0; i < treeHeight; i++)
             {
-                placeTile(log, x, y + i);
+                placeTile(tileAtlas.log.tileSprite, x, y + i, true);
             }
             
 
             // Generate Leaves
-            placeTile(leaf, x, y + treeHeight);
-            placeTile(leaf, x, y + treeHeight + 1);
-            placeTile(leafOrange, x, y + treeHeight + 2);
+            placeTile(tileAtlas.leaf.tileSprite, x, y + treeHeight, true);
+            placeTile(tileAtlas.leaf.tileSprite, x, y + treeHeight + 1, true);
+            placeTile(tileAtlas.leafOrange.tileSprite, x, y + treeHeight + 2, true);
 
-            placeTile(leaf, x - 1, y + treeHeight);
-            placeTile(leaf, x - 2, y + treeHeight);
-            placeTile(leaf, x - 1, y + treeHeight + 1);        
+            placeTile(tileAtlas.leaf.tileSprite, x - 1, y + treeHeight, true);
+            placeTile(tileAtlas.leaf.tileSprite, x - 2, y + treeHeight, true);
+            placeTile(tileAtlas.leaf.tileSprite, x - 1, y + treeHeight + 1, true);        
 
-            placeTile(leaf, x + 1, y + treeHeight);
-            placeTile(leaf, x + 2, y + treeHeight);
-            placeTile(leaf, x + 1, y + treeHeight + 1);
+            placeTile(tileAtlas.leaf.tileSprite, x + 1, y + treeHeight, true);
+            placeTile(tileAtlas.leaf.tileSprite, x + 2, y + treeHeight, true);
+            placeTile(tileAtlas.leaf.tileSprite, x + 1, y + treeHeight + 1, true);
         }
     }
 
-    public void placeTile(Sprite tileSprite, float x, float y)
+    public void placeTile(Sprite tileSprite, float x, float y, bool backgroundElement)
     {
         GameObject newTile = new GameObject();
 
@@ -178,6 +228,13 @@ public class TerrarianGen : MonoBehaviour
 
 
         newTile.AddComponent<SpriteRenderer>();
+        if (!backgroundElement)
+        {
+        newTile.AddComponent<BoxCollider2D>();
+        newTile.GetComponent<BoxCollider2D>().size = Vector2.one;
+        newTile.tag = "Ground"; 
+        }
+        
         newTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
         newTile.name = tileSprite.name + x + y;
         newTile.transform.position = new Vector2(x + 0.5f, y + 0.5f);
