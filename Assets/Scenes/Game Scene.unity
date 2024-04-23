@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 194016742}
   - component: {fileID: 194016741}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Terrarian Generation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157,19 +157,22 @@ MonoBehaviour:
   stone: {fileID: 21300000, guid: 669406df321d8e144ba3ba216d3b95c4, type: 3}
   log: {fileID: 21300000, guid: 4f8acaf0a92777f4392c653cb872e6b5, type: 3}
   leaf: {fileID: 21300000, guid: e94bd73718f9b9e48ab7ce3d718b348e, type: 3}
-  treeChance: 15
+  leafOrange: {fileID: 21300000, guid: 54e8f6c2816f0fe4d8d6c9a9aea06452, type: 3}
+  treeChance: 25
   minTreeHeight: 3
   maxTreeHeight: 6
+  ChunkSize: 1
+  worldSize: 500
   generateCaves: 1
   dirtLayerHeight: 5
   surfaceValue: 0.25
-  worldSize: 100
   heightMultiplier: 25
-  heightAddition: 25
+  heightAddition: 75
   terrainFreq: 0.04
   caveFreq: 0.08
   seed: 0
   noiseTexture: {fileID: 0}
+  worldChunks: []
 --- !u!4 &194016742
 Transform:
   m_ObjectHideFlags: 0
