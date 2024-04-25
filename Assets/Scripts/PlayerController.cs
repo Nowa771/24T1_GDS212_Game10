@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public TileClass selectedTile;
 
+    public int Reach;
     public Vector2Int mousePos;
     
     public float moveSpeed;
@@ -62,14 +63,18 @@ public class PlayerController : MonoBehaviour
 
         dig = Input.GetMouseButton(0);
         place = Input.GetMouseButton(1);
-        if (dig)
+        if (Vector2.Distance(transform.position, mousePos) <= Reach)
         {
-            terrainGenerator.RemoveTile(mousePos.x, mousePos.y);
+            if (dig)
+            {
+                terrainGenerator.RemoveTile(mousePos.x, mousePos.y);
+            }
+            else if (place)
+            {
+                terrainGenerator.placeTile(selectedTile.tileSprite, mousePos.x, mousePos.y, false);
+            }
         }
-        else if (place)
-        {
-            terrainGenerator.placeTile(selectedTile.tileSprite, mousePos.x, mousePos.y, false);
-        }
+        
 
 
         if (horizontal > 0)
