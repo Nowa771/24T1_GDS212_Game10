@@ -103,7 +103,7 @@ public class TerrarianGen : MonoBehaviour
     {
         for (int i = 0; i <worldChunks.Length; i++)
         {
-            if (Vector2.Distance(new Vector2(i * ChunkSize, 0), new Vector2(player.transform.position.x, 0)) > Camera.main.orthographicSize * 24f)
+            if (Vector2.Distance(new Vector2(i * ChunkSize, 0), new Vector2(player.transform.position.x, 0)) > Camera.main.orthographicSize * 16.5f)
                 worldChunks[i].SetActive(false);
             else
                 worldChunks[i].SetActive(true);
