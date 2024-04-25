@@ -88,7 +88,28 @@ public class TerrarianGen : MonoBehaviour
         GenerateTerrain();
        
         player.Spawn();
+
+        RefreshChunks();
     }
+
+    private void Update()
+    {
+        RefreshChunks();
+    }
+
+
+
+    void RefreshChunks()
+    {
+        for (int i = 0; i <worldChunks.Length; i++)
+        {
+            if (Vector2.Distance(new Vector2(i * ChunkSize, 0), new Vector2(player.transform.position.x, 0)) > Camera.main.orthographicSize * 24f)
+                worldChunks[i].SetActive(false);
+            else
+                worldChunks[i].SetActive(true);
+        }
+    }
+
     public void CreateChunks()
     {
         int numChunks = worldSize / ChunkSize;
