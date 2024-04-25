@@ -287,12 +287,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3113a9f185f89d144a33a4bba11768f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedTile: {fileID: 11400000, guid: 0a67be923f7f3a842a1f55945930bcea, type: 2}
   mousePos: {x: 0, y: 0}
   moveSpeed: 5
   jumpForce: 12
   onGround: 0
   horizontal: 0
   dig: 0
+  place: 0
   spawnPos: {x: 0, y: 0}
   terrainGenerator: {fileID: 0}
 --- !u!95 &5121189685155521237

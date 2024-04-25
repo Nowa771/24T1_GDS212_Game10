@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public TileClass selectedTile;
+
     public Vector2Int mousePos;
     
     public float moveSpeed;
@@ -16,6 +18,7 @@ public class PlayerController : MonoBehaviour
 
     public float horizontal;
     public bool dig;
+    public bool place;
 
     [HideInInspector]
     public Vector2 spawnPos;
@@ -58,9 +61,14 @@ public class PlayerController : MonoBehaviour
         Vector2 movement = new Vector2(horizontal * moveSpeed, rb.velocity.y);
 
         dig = Input.GetMouseButton(0);
+        place = Input.GetMouseButton(1);
         if (dig)
         {
             terrainGenerator.RemoveTile(mousePos.x, mousePos.y);
+        }
+        else if (place)
+        {
+            terrainGenerator.placeTile(selectedTile.tileSprite, mousePos.x, mousePos.y, false);
         }
 
 
@@ -88,6 +96,7 @@ public class PlayerController : MonoBehaviour
 
 
         anim.SetFloat("Horizontal", horizontal);
-        anim.SetBool("dig", dig);
+        anim.SetBool("dig", dig || place);
+
     }
 }
