@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TerrarianGen : MonoBehaviour
 {
+    public PlayerController player;
 
     [Header("Tile Atlas")]
     public TileAtlas tileAtlas;
@@ -40,7 +41,9 @@ public class TerrarianGen : MonoBehaviour
     public Texture2D diamondSpread;
 
     private GameObject[] worldChunks;
+
     private List<Vector2> worldTiles = new List<Vector2>();
+    private List<GameObject> worldTileObjects = new List<GameObject> ();
 
     private void OnValidate()
     {
@@ -83,6 +86,8 @@ public class TerrarianGen : MonoBehaviour
 
         CreateChunks();
         GenerateTerrain();
+       
+        player.Spawn();
     }
     public void CreateChunks()
     {
@@ -101,7 +106,10 @@ public class TerrarianGen : MonoBehaviour
     {
         for (int x = 0; x < worldSize; x++)
         {
+
             float height = Mathf.PerlinNoise((x + seed) * terrainFreq, seed * terrainFreq) * heightMultiplier + heightAddition;
+            if (x == worldSize / 2)
+                player.spawnPos = new Vector2(x, height + 1);
 
             for (int y = 0; y < height; y++)
             {
@@ -213,9 +221,23 @@ public class TerrarianGen : MonoBehaviour
         }
     }
 
+    public void RemoveTile(int x, int y)
+    {
+       if (worldTiles.Contains(new Vector2Int(x,y)) && x >= 0 && x <= worldSize && y >= 0 && y <= worldSize)
+       {
+           Destroy(worldTileObjects[worldTiles.IndexOf(new Vector2(x, y))]);
+       }
+
+
+    }
+
     public void placeTile(Sprite tileSprite, float x, float y, bool backgroundElement)
     {
-        GameObject newTile = new GameObject();
+      
+
+
+
+            GameObject newTile = new GameObject();
 
         //float chunkCoord  = Mathf.Round(x / ChunkSize) * ChunkSize;
         //newTile.transform.parent = worldChunks[(int)chunkCoord].transform;
@@ -240,5 +262,6 @@ public class TerrarianGen : MonoBehaviour
         newTile.transform.position = new Vector2(x + 0.5f, y + 0.5f);
 
         worldTiles.Add(newTile.transform.position - (Vector3.one * 0.5f));
+        worldTileObjects.Add(newTile);
     }
 }

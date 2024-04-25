@@ -9,6 +9,11 @@ public class CamController : MonoBehaviour
 
     public Transform playerTransform;
 
+    public void Spawn(Vector3 pos)
+    {
+        transform.position = pos;
+    }
+
     public void FixedUpdate()
     {
         Vector2 pos = GetComponent<Transform>().position;
