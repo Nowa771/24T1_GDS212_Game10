@@ -11,6 +11,7 @@ public class TileAtlas : ScriptableObject
     public TileClass log;
     public TileClass leaf;
     public TileClass leafOrange;
+    public TileClass tallGrass;
 
 
     public TileClass coal;

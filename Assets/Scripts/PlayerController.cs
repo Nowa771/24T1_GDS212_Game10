@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
             }
             else if (place)
             {
-                terrainGenerator.placeTile(selectedTile.tileSprite, mousePos.x, mousePos.y, false);
+                terrainGenerator.placeTile(selectedTile.tileSprites, mousePos.x, mousePos.y, false);
             }
         }
         
