@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a51901deae2d2b548afcd313ffcb40dd, type: 3}
+  m_Name: Desert
+  m_EditorClassIdentifier: 
+  grass: {fileID: 11400000, guid: fa4dd4e405b1ba140b25b38b869a7d33, type: 2}
+  dirt: {fileID: 11400000, guid: fa4dd4e405b1ba140b25b38b869a7d33, type: 2}
+  stone: {fileID: 11400000, guid: fa4dd4e405b1ba140b25b38b869a7d33, type: 2}
+  log: {fileID: 0}
+  leaf: {fileID: 0}
+  leafOrange: {fileID: 0}
+  tallGrass: {fileID: 0}
+  snow: {fileID: 0}
+  sand: {fileID: 0}
+  MagicGrass: {fileID: 0}
+  coal: {fileID: 0}
+  iron: {fileID: 0}
+  gold: {fileID: 0}
+  diamond: {fileID: 0}
