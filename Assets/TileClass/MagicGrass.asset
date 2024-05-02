@@ -15,4 +15,4 @@ MonoBehaviour:
   tileName: MagicGrass
   tileSprites:
   - {fileID: 21300000, guid: f4c80a76e4b83e54d8edace589994291, type: 3}
-  inBackground: 1
+  inBackground: 0

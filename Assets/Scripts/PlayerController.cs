@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Inventory inventory;
+    public bool inventoryShowing = false;
+
     public TileClass selectedTile;
 
     public int Reach;
@@ -26,13 +29,16 @@ public class PlayerController : MonoBehaviour
 
     public TerrarianGen terrainGenerator;
 
-    public void Spawn()
+    private void Start()
     {
-        GetComponent<Transform>().position = spawnPos;
-        
-
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        inventory = GetComponent<Inventory>();
+    }
+
+    public void Spawn()
+    {
+        GetComponent<Transform>().position = spawnPos;        
     }
 
     private void OnTriggerStay2D(Collider2D col)
@@ -63,6 +69,9 @@ public class PlayerController : MonoBehaviour
 
         dig = Input.GetMouseButton(0);
         place = Input.GetMouseButton(1);
+
+
+
         if (Vector2.Distance(transform.position, mousePos) <= Reach)
         {
             if (dig)
@@ -99,6 +108,12 @@ public class PlayerController : MonoBehaviour
         mousePos.y = Mathf.RoundToInt(Camera.main.ScreenToWorldPoint(Input.mousePosition).y - 0.5f);
 
 
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            inventoryShowing = !inventoryShowing;
+        }
+
+        inventory.InventoryUI.SetActive(inventoryShowing);
 
         anim.SetFloat("Horizontal", horizontal);
         anim.SetBool("dig", dig || place);

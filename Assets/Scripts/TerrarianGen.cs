@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TerrarianGen : MonoBehaviour
 {
+    public GameObject tileDrop;
+
     [Header("Tile Atlas")]
     public float seed;
     public TileAtlas tileAtlas;
@@ -45,7 +47,8 @@ public class TerrarianGen : MonoBehaviour
     private GameObject[] worldChunks;
 
     private List<Vector2> worldTiles = new List<Vector2>();
-    private List<GameObject> worldTileObjects = new List<GameObject> ();
+    private List<GameObject> worldTileObjects = new List<GameObject>();
+   // private List<TileObject> worldTileObjects = new List<GameObject>();
 
     private void OnValidate()
     {
@@ -276,6 +279,9 @@ public class TerrarianGen : MonoBehaviour
        if (worldTiles.Contains(new Vector2Int(x,y)) && x >= 0 && x <= worldSize && y >= 0 && y <= worldSize)
        {
            Destroy(worldTileObjects[worldTiles.IndexOf(new Vector2(x, y))]);
+           GameObject newtileDrop = Instantiate(tileDrop, new Vector2(x, y), Quaternion.identity);
+          // newtileDrop.GetComponent<SpriteRenderer>().sprite = worldTileObjects[worldTiles.IndexOf(new Vector2(x, y))].tileSprites;
+
             worldTileObjects.RemoveAt(worldTiles.IndexOf(new Vector2(x,y)));
             worldTiles.RemoveAt(worldTiles.IndexOf(new Vector2(x, y)));
        }
